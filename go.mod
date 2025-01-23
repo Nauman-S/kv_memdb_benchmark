@@ -1,6 +1,6 @@
 module dbbenchmarking
 
-go 1.23
+go 1.22.2
 
 require (
 	github.com/dgraph-io/badger/v4 v4.5.1
