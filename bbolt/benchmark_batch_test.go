@@ -36,15 +36,12 @@ func BenchmarkBboltBatchTx(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		// Start a transaction at the beginning of each batch
 		if i%100 == 0 {
-			// Commit the previous transaction when batch size is reached
 			if tx != nil {
 				if err := tx.Commit(); err != nil {
 					b.Fatal(err)
 				}
 			}
-			// Start a new writable transaction
 			tx, err = db.Begin(true)
 			if err != nil {
 				b.Fatal(err)
@@ -54,8 +51,6 @@ func BenchmarkBboltBatchTx(b *testing.B) {
 				b.Fatal("Bucket is nil")
 			}
 		}
-
-		// Add entries to the bucket within the current transaction
 		key, val := util.GenerateRandomData()
 		err := bucket.Put(key, val)
 		if err != nil {
@@ -63,7 +58,7 @@ func BenchmarkBboltBatchTx(b *testing.B) {
 		}
 	}
 
-	// Commit the remaining records in the final batch
+	// Commit the remaining records
 	if tx != nil {
 		if err := tx.Commit(); err != nil {
 			b.Fatal(err)

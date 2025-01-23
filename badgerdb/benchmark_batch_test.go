@@ -8,7 +8,7 @@ import (
 
 // Batching multiple operations in a single TX
 func BenchmarkBadgerDBBatchTx(b *testing.B) {
-	opts := badger.DefaultOptions(path).WithLoggingLevel(badger.ERROR) // Stops the info logs
+	opts := badger.DefaultOptions(path).WithLoggingLevel(badger.ERROR)
 	db, err := badger.Open(opts)
 	if err != nil {
 		b.Fatal(err)
@@ -16,7 +16,7 @@ func BenchmarkBadgerDBBatchTx(b *testing.B) {
 	defer db.Close()
 
 	txn := db.NewTransaction(true) // true = writable tx, false = read only
-	defer txn.Discard()            // Ensure the transaction is discarded if not committed
+	defer txn.Discard()
 
 	b.ResetTimer()
 
@@ -27,17 +27,16 @@ func BenchmarkBadgerDBBatchTx(b *testing.B) {
 			b.Fatal(err)
 		}
 
-		// Commit and start a new transaction after a certain batch size
 		if i%100 == 0 {
 			err = txn.Commit()
 			if err != nil {
 				b.Fatal(err)
 			}
-			txn = db.NewTransaction(true) // Start a new transaction
+			txn = db.NewTransaction(true)
 		}
 	}
 
-	// Commit remaining entries (if any) that were not part of the last batch
+	// Commit remaining entries (if any)
 	if err := txn.Commit(); err != nil {
 		b.Fatal(err)
 	}

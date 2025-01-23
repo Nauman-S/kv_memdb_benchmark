@@ -22,14 +22,14 @@ func BenchmarkBadgerDBBatchWriteBatch(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		key, val := util.GenerateRandomData()
 		err := wb.Set(key, val)
-		//key, val is set in memory using tx.SetEntry as in bennchmark batch 1
-		// If tx is reached limit it calls CommitWith which is a go routine commit call with a callback
+		//key, val is set in memory using tx.SetEntry similar to manual badgerDB benchmarking
+		// If tx memory limit is reached it calls asynchrnous Commit i.e. CommitWith
 		if err != nil {
 			b.Fatal(err)
 		}
 
 		if i%100 == 0 {
-			err = wb.Flush() //Waits for all 100 CommitWith calls to complete. Basically waits for write to disk
+			err = wb.Flush() //Waits for all Async CommitWith calls in Batch to complete
 			if err != nil {
 				b.Fatal(err)
 			}

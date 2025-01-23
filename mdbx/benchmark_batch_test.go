@@ -53,11 +53,11 @@ func BenchmarkMDBXDBBatchTx(b *testing.B) {
 		key, val := util.GenerateRandomData()
 		err = txn.Put(dbi, key, val, 0)
 		if err != nil {
-			txn.Abort() // Ensure transaction cleanup on error
+			txn.Abort()
 			b.Fatalf("Failed to put key-value: %v", err)
 		}
 
-		if i%100 == 0 { // Batch size of 100 operations
+		if i%100 == 0 {
 			txn.Commit()
 			txn, err = env.BeginTxn(nil, 0)
 		}

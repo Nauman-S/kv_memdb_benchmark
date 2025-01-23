@@ -6,11 +6,8 @@ import (
 	"testing"
 )
 
-/*
-Transactions are thread bound in mdbx -  ca
-*/
 func BenchmarkBadgerDBManualTx(b *testing.B) {
-	opts := badger.DefaultOptions(path).WithLoggingLevel(badger.ERROR) // Stops the info logs
+	opts := badger.DefaultOptions(path).WithLoggingLevel(badger.ERROR)
 	db, err := badger.Open(opts)
 	if err != nil {
 		b.Fatal(err)
@@ -26,7 +23,7 @@ func BenchmarkBadgerDBManualTx(b *testing.B) {
 		if err != nil {
 			b.Fatal(err)
 		}
-		err = txn.Commit() //Waits till entry is in LSM and valuelog file. Written to disk.
+		err = txn.Commit() //Waits till entry is in LSM and valuelog file i.e. Written to disk
 		if err != nil {
 			b.Fatal(err)
 		}

@@ -38,8 +38,6 @@ func BenchmarkMDBXDBManualTx(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		runtime.LockOSThread()
-		//If the Go scheduler moves the goroutine (and its transaction) between different OS threads during the lifetime of that transaction, MDBX will raise an error i think
-		//Basically doesnt work without runtime.LockOSThread
 		txn, err := env.BeginTxn(nil, 0)
 		if err != nil {
 			b.Fatalf("Failed to begin transaction: %v", err)
@@ -48,7 +46,7 @@ func BenchmarkMDBXDBManualTx(b *testing.B) {
 		err = txn.Put(dbi, key, val, 0)
 
 		if err != nil {
-			txn.Abort() // Ensure transaction cleanup on error
+			txn.Abort()
 			b.Fatalf("Failed to put key-value: %v", err)
 		}
 
