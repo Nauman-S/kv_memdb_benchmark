@@ -7,7 +7,9 @@ import (
 	"testing"
 )
 
-const path = "/tmp/mdbx"
+func init() {
+	util.Init()
+}
 
 func BenchmarkMDBXDBManualTx(b *testing.B) {
 	env, err := mdbx.NewEnv()
@@ -19,7 +21,7 @@ func BenchmarkMDBXDBManualTx(b *testing.B) {
 		b.Fatal(err)
 	}
 
-	err = env.Open(path, mdbx.Create, 0664)
+	err = env.Open(util.PathMDBX, mdbx.Create, 0664)
 	if err != nil {
 		b.Fatal(err)
 	}
@@ -42,7 +44,7 @@ func BenchmarkMDBXDBManualTx(b *testing.B) {
 		if err != nil {
 			b.Fatalf("Failed to begin transaction: %v", err)
 		}
-		key, val := util.GenerateRandomData()
+		key, val := util.GetTestData()
 		err = txn.Put(dbi, key, val, 0)
 
 		if err != nil {

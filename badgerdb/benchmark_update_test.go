@@ -6,8 +6,11 @@ import (
 	"testing"
 )
 
+func init() {
+	util.Init()
+}
 func BenchmarkBadgerDBUpdateTest(b *testing.B) {
-	opts := badger.DefaultOptions(path).WithLoggingLevel(badger.ERROR) // Stops the info logs
+	opts := badger.DefaultOptions(util.PathBadger).WithLoggingLevel(badger.ERROR) // Stops the info logs
 	db, err := badger.Open(opts)
 	if err != nil {
 		b.Fatal(err)
@@ -16,7 +19,7 @@ func BenchmarkBadgerDBUpdateTest(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		key, val := util.GenerateRandomData()
+		key, val := util.GetTestData()
 		err = db.Update(func(txn *badger.Txn) error {
 			return txn.Set(key, val)
 		})

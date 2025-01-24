@@ -8,8 +8,12 @@ import (
 
 const path = "/tmp/bolt"
 
+func init() {
+	util.Init()
+}
+
 func BenchmarkBboltDBUpdateTest(b *testing.B) {
-	db, err := bolt.Open(path, 0600, nil)
+	db, err := bolt.Open(util.PathBbolt, 0600, nil)
 	if err != nil {
 		b.Fatal(err)
 	}
@@ -26,7 +30,7 @@ func BenchmarkBboltDBUpdateTest(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		err = db.Update(func(txn *bolt.Tx) error {
-			key, val := util.GenerateRandomData()
+			key, val := util.GetTestData()
 			return txn.Bucket([]byte("test-bucket")).Put(key, val)
 		})
 	}

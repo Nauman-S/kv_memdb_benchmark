@@ -2,11 +2,15 @@ package mdbx
 
 import (
 	"dbbenchmarking/util"
+	"fmt"
 	"github.com/erigontech/mdbx-go/mdbx"
 	"runtime"
 	"testing"
 )
 
+func init() {
+	util.Init()
+}
 func BenchmarkMDBXDBBatchTx(b *testing.B) {
 	env, err := mdbx.NewEnv()
 	if err != nil {
@@ -21,7 +25,7 @@ func BenchmarkMDBXDBBatchTx(b *testing.B) {
 		b.Fatal(err)
 	}
 
-	err = env.Open(path, mdbx.Create, 0664)
+	err = env.Open(util.PathMDBX, mdbx.Create, 0664)
 	if err != nil {
 		b.Fatal(err)
 	}
@@ -37,6 +41,15 @@ func BenchmarkMDBXDBBatchTx(b *testing.B) {
 		b.Fatalf("Failed to create/open database: %v", err)
 	}
 
+	for _, batchSize := range util.GetBatchSize() {
+		b.Run(fmt.Sprintf("batchSize=%d", batchSize), func(b *testing.B) {
+			runForBatchSize(batchSize, b, env, dbi)
+		})
+	}
+
+}
+
+func runForBatchSize(batchSize int, b *testing.B, env *mdbx.Env, dbi mdbx.DBI) {
 	b.ResetTimer()
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
@@ -50,19 +63,19 @@ func BenchmarkMDBXDBBatchTx(b *testing.B) {
 			b.Fatalf("Failed to begin transaction: %v", err)
 		}
 
-		key, val := util.GenerateRandomData()
+		key, val := util.GetTestData()
 		err = txn.Put(dbi, key, val, 0)
 		if err != nil {
 			txn.Abort()
 			b.Fatalf("Failed to put key-value: %v", err)
 		}
 
-		if i%100 == 0 {
+		if i%batchSize == 0 {
 			txn.Commit()
 			txn, err = env.BeginTxn(nil, 0)
 		}
 
 	}
-	txn.Commit()
 
+	txn.Commit()
 }

@@ -6,8 +6,12 @@ import (
 	"testing"
 )
 
+func init() {
+	util.Init()
+}
+
 func BenchmarkBadgerDBManualTx(b *testing.B) {
-	opts := badger.DefaultOptions(path).WithLoggingLevel(badger.ERROR)
+	opts := badger.DefaultOptions(util.PathBadger).WithLoggingLevel(badger.ERROR)
 	db, err := badger.Open(opts)
 	if err != nil {
 		b.Fatal(err)
@@ -18,7 +22,7 @@ func BenchmarkBadgerDBManualTx(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		txn := db.NewTransaction(true) // true = writable tx, false = read only
-		key, val := util.GenerateRandomData()
+		key, val := util.GetTestData()
 		err := txn.SetEntry(badger.NewEntry(key, val))
 		if err != nil {
 			b.Fatal(err)

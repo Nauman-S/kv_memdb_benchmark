@@ -7,6 +7,10 @@ import (
 	"testing"
 )
 
+func init() {
+	util.Init()
+}
+
 func BenchmarkMDBXDBUpdateTest(b *testing.B) {
 	env, err := mdbx.NewEnv()
 	if err != nil {
@@ -17,7 +21,7 @@ func BenchmarkMDBXDBUpdateTest(b *testing.B) {
 		b.Fatal(err)
 	}
 
-	err = env.Open(path, mdbx.Create, 0664)
+	err = env.Open(util.PathMDBX, mdbx.Create, 0664)
 	if err != nil {
 		b.Fatal(err)
 	}
@@ -31,7 +35,7 @@ func BenchmarkMDBXDBUpdateTest(b *testing.B) {
 				return fmt.Errorf("open DBI: %w", err)
 			}
 
-			key, val := util.GenerateRandomData()
+			key, val := util.GetTestData()
 			if err := txn.Put(dbi, key, val, 0); err != nil {
 				return fmt.Errorf("put: %w", err)
 			}

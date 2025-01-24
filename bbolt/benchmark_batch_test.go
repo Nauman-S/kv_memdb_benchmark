@@ -2,19 +2,32 @@ package bbolt
 
 import (
 	"dbbenchmarking/util"
+	"fmt"
 	bolt "go.etcd.io/bbolt"
 	"testing"
 )
 
+func init() {
+	util.Init()
+}
 func BenchmarkBboltBatchTx(b *testing.B) {
-	db, err := bolt.Open(path, 0600, nil)
+	db, err := bolt.Open(util.PathBbolt, 0600, nil)
 	if err != nil {
 		b.Fatal(err)
 	}
 	defer db.Close()
 
-	err = db.Update(func(txn *bolt.Tx) error {
-		_, err := txn.CreateBucketIfNotExists([]byte("test-bucket"))
+	for _, batchSize := range util.GetBatchSize() {
+		b.Run(fmt.Sprintf("batchSize=%d", batchSize), func(b *testing.B) {
+			runForBatchSize(batchSize, b, db)
+		})
+	}
+
+}
+
+func runForBatchSize(batchSize int, b *testing.B, db *bolt.DB) {
+	err := db.Update(func(txn *bolt.Tx) error {
+		_, err := txn.CreateBucketIfNotExists([]byte(b.Name()))
 		return err
 	})
 
@@ -28,7 +41,7 @@ func BenchmarkBboltBatchTx(b *testing.B) {
 	}
 	defer tx.Rollback()
 
-	bucket := tx.Bucket([]byte("test-bucket"))
+	bucket := tx.Bucket([]byte(b.Name()))
 	if bucket == nil {
 		b.Fatal("Bucket is nil")
 	}
@@ -36,7 +49,7 @@ func BenchmarkBboltBatchTx(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		if i%100 == 0 {
+		if i%batchSize == 0 {
 			if tx != nil {
 				if err := tx.Commit(); err != nil {
 					b.Fatal(err)
@@ -46,12 +59,12 @@ func BenchmarkBboltBatchTx(b *testing.B) {
 			if err != nil {
 				b.Fatal(err)
 			}
-			bucket = tx.Bucket([]byte("test-bucket"))
+			bucket = tx.Bucket([]byte(b.Name()))
 			if bucket == nil {
 				b.Fatal("Bucket is nil")
 			}
 		}
-		key, val := util.GenerateRandomData()
+		key, val := util.GetTestData()
 		err := bucket.Put(key, val)
 		if err != nil {
 			b.Fatal(err)

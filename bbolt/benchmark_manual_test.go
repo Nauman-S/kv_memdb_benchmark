@@ -6,8 +6,11 @@ import (
 	"testing"
 )
 
+func init() {
+	util.Init()
+}
 func BenchmarkBboltDBManualTx(b *testing.B) {
-	db, err := bolt.Open(path, 0600, nil)
+	db, err := bolt.Open(util.PathBbolt, 0600, nil)
 	if err != nil {
 		b.Fatal(err)
 	}
@@ -31,7 +34,7 @@ func BenchmarkBboltDBManualTx(b *testing.B) {
 		if bucket == nil {
 			b.Fatalf("Bucket not found")
 		}
-		key, val := util.GenerateRandomData()
+		key, val := util.GetTestData()
 
 		err = bucket.Put(key, val)
 		if err != nil {
