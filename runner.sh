@@ -48,9 +48,12 @@ sleep 1
 
 echo "\n\nMultiple Reader Single Writer\n\n"
 
-go test -bench=BenchmarkMDBXMultiReadSingleWrite -benchtime=10s ./mdbx -benchmem | remove_system_info
+go test -bench=BenchmarkBadgerMultiReadSingleWrite -benchtime=5s ./badgerdb -benchmem | remove_system_info
+echo "\n"
+
+go test -bench=BenchmarkMDBXMultiReadSingleWrite -benchtime=5s ./mdbx -benchmem | remove_system_info
 
 
 echo "\n\nMultiple Reader Multiple Writer\n\n"
 
-go test -bench=BenchmarkMDBXMultiReadMultiWrite -benchtime=10s ./mdbx -benchmem | remove_system_info
+go test -bench=BenchmarkMDBXMultiReadMultiWrite -benchtime=5s ./mdbx -benchmem | remove_system_info

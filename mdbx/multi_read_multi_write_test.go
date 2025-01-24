@@ -44,7 +44,6 @@ func initializeMultipleWriters(wg *sync.WaitGroup, start <-chan struct{}, numWri
 				txn, err := env.BeginTxn(nil, 0)
 				if err != nil {
 					b.Fatal(err)
-					continue
 				}
 
 				key, value, _ := it.Next()

@@ -52,7 +52,7 @@ func GetKeyValue() ([]byte, []byte) {
 }
 
 func GetKeyValueAtIndex(index int) ([]byte, []byte) {
-	return t.Data[t.i].Key, t.Data[t.i].Val
+	return t.Data[index].Key, t.Data[index].Val
 }
 
 func GetBatchSize() []int {
