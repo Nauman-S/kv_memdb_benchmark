@@ -20,6 +20,10 @@ func BenchmarkMDBXDBUpdateTest(b *testing.B) {
 	if err != nil {
 		b.Fatal(err)
 	}
+	err = env.SetGeometry(16*1024*1024, /* Lower size: 16 MiB */
+		1<<30, /* Current size: 1 GiB */
+		4<<30, /* Upper size: 4 GiB */
+		0, 0, 0)
 
 	err = env.Open(util.PathMDBX, mdbx.Create, 0664)
 	if err != nil {
