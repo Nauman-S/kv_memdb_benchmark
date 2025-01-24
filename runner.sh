@@ -56,4 +56,7 @@ go test -bench=BenchmarkMDBXMultiReadSingleWrite -benchtime=5s ./mdbx -benchmem 
 
 echo "\n\nMultiple Reader Multiple Writer\n\n"
 
+go test -bench=BenchmarkBadgerMultiReadMultiWrite -benchtime=5s ./badgerdb -benchmem | remove_system_info
+echo "\n"
+
 go test -bench=BenchmarkMDBXMultiReadMultiWrite -benchtime=5s ./mdbx -benchmem | remove_system_info
