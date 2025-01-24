@@ -44,3 +44,13 @@ echo "\n"
 go test -bench=BenchmarkMDBXDBBatchTx ./mdbx -benchmem | remove_system_info
 
 sleep 1
+
+
+echo "\n\nMultiple Reader Single Writer\n\n"
+
+go test -bench=BenchmarkMDBXMultiReadSingleWrite -benchtime=10s ./mdbx -benchmem | remove_system_info
+
+
+echo "\n\nMultiple Reader Multiple Writer\n\n"
+
+go test -bench=BenchmarkMDBXMultiReadMultiWrite -benchtime=10s ./mdbx -benchmem | remove_system_info

@@ -19,7 +19,7 @@ func BenchmarkBadgerDBUpdateTest(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		key, val := util.GetTestData()
+		key, val := util.GetKeyValue()
 		err = db.Update(func(txn *badger.Txn) error {
 			return txn.Set(key, val)
 		})

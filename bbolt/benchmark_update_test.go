@@ -30,7 +30,7 @@ func BenchmarkBboltDBUpdateTest(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		err = db.Update(func(txn *bolt.Tx) error {
-			key, val := util.GetTestData()
+			key, val := util.GetKeyValue()
 			return txn.Bucket([]byte("test-bucket")).Put(key, val)
 		})
 	}

@@ -38,7 +38,7 @@ func runForBatchSize(batchSize int, b *testing.B, db *badger.DB) {
 			}
 			wb = db.NewWriteBatch()
 		}
-		key, val := util.GetTestData()
+		key, val := util.GetKeyValue()
 		//key, val is set in memory using tx.SetEntry similar to the other batch badgerDB benchmarking
 		// If tx memory limit is reached it calls asynchronous Commit i.e. CommitWith
 		err := wb.Set(key, val)

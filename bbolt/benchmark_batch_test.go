@@ -64,7 +64,7 @@ func runForBatchSize(batchSize int, b *testing.B, db *bolt.DB) {
 				b.Fatal("Bucket is nil")
 			}
 		}
-		key, val := util.GetTestData()
+		key, val := util.GetKeyValue()
 		err := bucket.Put(key, val)
 		if err != nil {
 			b.Fatal(err)

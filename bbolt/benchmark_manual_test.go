@@ -34,7 +34,7 @@ func BenchmarkBboltDBManualTx(b *testing.B) {
 		if bucket == nil {
 			b.Fatalf("Bucket not found")
 		}
-		key, val := util.GetTestData()
+		key, val := util.GetKeyValue()
 
 		err = bucket.Put(key, val)
 		if err != nil {

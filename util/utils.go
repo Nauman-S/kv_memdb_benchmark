@@ -2,6 +2,7 @@ package util
 
 import (
 	"crypto/rand"
+	"math/big"
 	"os"
 )
 
@@ -10,14 +11,14 @@ const PathBbolt = "/tmp/bolt"
 const PathMDBX = "/tmp/mdbx"
 
 type KeyValue struct {
-	key []byte
-	val []byte
+	Key []byte
+	Val []byte
 }
 
 var t *testData
 
 type testData struct {
-	data []KeyValue
+	Data []KeyValue
 	i    int
 }
 
@@ -28,7 +29,7 @@ func Init() {
 	}
 	for i := 0; i < 1000000; i++ {
 		key, val := generateRandomData()
-		t.data[i] = KeyValue{key, val}
+		t.Data[i] = KeyValue{key, val}
 	}
 
 	panicIfErr(os.RemoveAll(PathBadger))
@@ -42,12 +43,16 @@ func panicIfErr(err error) {
 	}
 }
 
-func GetTestData() ([]byte, []byte) {
+func GetKeyValue() ([]byte, []byte) {
 	t.i++
 	if t.i == 1000000 {
 		t.i = 0
 	}
-	return t.data[t.i].key, t.data[t.i].val
+	return t.Data[t.i].Key, t.Data[t.i].Val
+}
+
+func GetKeyValueAtIndex(index int) ([]byte, []byte) {
+	return t.Data[t.i].Key, t.Data[t.i].Val
 }
 
 func GetBatchSize() []int {
@@ -66,4 +71,40 @@ func generateRandomData() ([]byte, []byte) {
 		panic(err) // handle error as needed
 	}
 	return key, val
+}
+
+func ShuffleSlice(slice []int) error {
+	n := len(slice)
+
+	for i := n - 1; i > 0; i-- {
+		randomIndex, err := rand.Int(rand.Reader, big.NewInt(int64(i+1)))
+		if err != nil {
+			return err
+		}
+		j := int(randomIndex.Int64())
+		slice[i], slice[j] = slice[j], slice[i]
+	}
+
+	return nil
+}
+
+type DataIterator struct {
+	index int
+}
+
+func (it *DataIterator) Reset() {
+	it.index = 0
+}
+
+func NewDataIterator() *DataIterator {
+	return &DataIterator{index: 0}
+}
+
+func (it *DataIterator) Next() ([]byte, []byte, bool) {
+	if it.index >= len(t.Data) {
+		return nil, nil, false
+	}
+	kv := t.Data[it.index]
+	it.index++
+	return kv.Key, kv.Val, true
 }

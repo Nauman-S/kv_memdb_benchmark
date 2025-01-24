@@ -22,7 +22,7 @@ func BenchmarkBadgerDBManualTx(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		txn := db.NewTransaction(true) // true = writable tx, false = read only
-		key, val := util.GetTestData()
+		key, val := util.GetKeyValue()
 		err := txn.SetEntry(badger.NewEntry(key, val))
 		if err != nil {
 			b.Fatal(err)

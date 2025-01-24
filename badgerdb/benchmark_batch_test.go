@@ -36,7 +36,7 @@ func runForTxSize(batchSize int, b *testing.B, db *badger.DB) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		key, val := util.GetTestData()
+		key, val := util.GetKeyValue()
 		err := txn.SetEntry(badger.NewEntry(key, val))
 		if err != nil {
 			b.Fatal(err)

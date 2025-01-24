@@ -63,7 +63,7 @@ func runForBatchSize(batchSize int, b *testing.B, env *mdbx.Env, dbi mdbx.DBI) {
 			b.Fatalf("Failed to begin transaction: %v", err)
 		}
 
-		key, val := util.GetTestData()
+		key, val := util.GetKeyValue()
 		err = txn.Put(dbi, key, val, 0)
 		if err != nil {
 			txn.Abort()

@@ -39,7 +39,7 @@ func BenchmarkMDBXDBUpdateTest(b *testing.B) {
 				return fmt.Errorf("open DBI: %w", err)
 			}
 
-			key, val := util.GetTestData()
+			key, val := util.GetKeyValue()
 			if err := txn.Put(dbi, key, val, 0); err != nil {
 				return fmt.Errorf("put: %w", err)
 			}
