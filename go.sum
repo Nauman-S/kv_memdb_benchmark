@@ -86,6 +86,8 @@ github.com/ledgerwatch/erigon-lib v1.0.0 h1:2o7EfgB/6CyjXAaQ8+Dh7AmY5rWvwSKg0kGp
 github.com/ledgerwatch/erigon-lib v1.0.0/go.mod h1:l1i6+H9MgizD+ObQ5cXsfA9S3egYTOCnnYGjbrJMqR4=
 github.com/ledgerwatch/log/v3 v3.9.0 h1:iDwrXe0PVwBC68Dd94YSsHbMgQ3ufsgjzXtFNFVZFRk=
 github.com/ledgerwatch/log/v3 v3.9.0/go.mod h1:EiAY6upmI/6LkNhOVxb4eVsmsP11HZCnZ3PlJMjYiqE=
+github.com/linxGnu/grocksdb v1.9.8 h1:vOIKv9/+HKiqJAElJIEYv3ZLcihRxyP7Suu/Mu8Dxjs=
+github.com/linxGnu/grocksdb v1.9.8/go.mod h1:C3CNe9UYc9hlEM2pC82AqiGS3LRW537u9LFV4wIZuHk=
 github.com/mattn/go-colorable v0.1.13 h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=
 github.com/mattn/go-colorable v0.1.13/go.mod h1:7S9/ev0klgBDR4GtXTXX8a3vIGJpMovkB8vQcUbaXHg=
 github.com/mattn/go-isatty v0.0.16/go.mod h1:kYGgaQfpe5nmfYZH+SKPsOc2e4SrIfOl2e/yFXSvRLM=

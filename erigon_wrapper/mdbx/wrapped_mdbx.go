@@ -1,4 +1,4 @@
-package erigon_wrapper
+package mdbx
 
 import (
 	"context"

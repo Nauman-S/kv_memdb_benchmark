@@ -9,6 +9,7 @@ import (
 const PathBadger = "/tmp/badger"
 const PathBbolt = "/tmp/bolt"
 const PathMDBX = "/tmp/mdbx"
+const PathRocksDB = "/tmp/rocksdb"
 
 type KeyValue struct {
 	Key []byte
@@ -35,6 +36,7 @@ func Init() {
 	panicIfErr(os.RemoveAll(PathBadger))
 	panicIfErr(os.RemoveAll(PathBbolt))
 	panicIfErr(os.RemoveAll(PathMDBX))
+	panicIfErr(os.RemoveAll(PathRocksDB))
 }
 
 func panicIfErr(err error) {

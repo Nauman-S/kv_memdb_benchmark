@@ -14,7 +14,7 @@
    limitations under the License.
 */
 
-package erigon_wrapper
+package mdbx
 
 import (
 	"bytes"

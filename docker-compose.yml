@@ -1,0 +1,11 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  benchmarks:
+    build: .
+    volumes:
+      - .:/app
+      - ./results:/results
+    environment:
+      - CGO_ENABLED=1

@@ -10,6 +10,7 @@ require (
 	github.com/go-stack/stack v1.8.1
 	github.com/ledgerwatch/erigon-lib v1.0.0
 	github.com/ledgerwatch/log/v3 v3.9.0
+	github.com/linxGnu/grocksdb v1.9.8
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58
 	github.com/prometheus/client_golang v1.20.5
 	github.com/prometheus/client_model v0.6.1
