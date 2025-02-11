@@ -36,5 +36,4 @@ ENV CGO_LDFLAGS="-L/usr/lib -lrocksdb -lstdc++ -lm -lz -lbz2 -lsnappy -llz4 -lzs
 ENV LD_LIBRARY_PATH="/usr/lib"
 
 
-#CMD ["go", "test", "-bench=BenchmarkRocksDBAtomicBatch", "./rocksdb", "-benchmem"]
 CMD ["/bin/sh", "-C", "runner.sh"]

@@ -5,7 +5,6 @@ services:
   benchmarks:
     build: .
     volumes:
-      - .:/app
-      - ./results:/results
+      - /tmp:/tmp
     environment:
       - CGO_ENABLED=1
