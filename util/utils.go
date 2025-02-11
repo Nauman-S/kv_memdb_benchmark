@@ -61,6 +61,10 @@ func GetBatchSize() []int {
 	return []int{1, 10, 100, 1000, 10000}
 }
 
+func GetTotalEntries() []int {
+	return []int{1000, 10000, 100000, 1000000}
+}
+
 func generateRandomData() ([]byte, []byte) {
 	key := make([]byte, 32)
 	val := make([]byte, 32)
