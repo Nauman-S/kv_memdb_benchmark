@@ -5,8 +5,16 @@ alias get_system_info="grep -e '^goos:' -e '^goarch:' -e '^pkg:' -e '^cpu:'"
 
 go test -bench=BenchmarkBadgerDBUpdateTest ./badgerdb -benchmem | get_system_info
 
+echo "\n\nBenchmark Read functions\n\n"
+go test -bench=BenchmarkRocksDBGet ./rocksdb -benchmem | remove_system_info
+echo "\n"
+go test -bench=BenchmarkBadgerGet ./badgerdb -benchmem | remove_system_info
+echo "\n"
+go test -bench=BenchmarkMDBXGet ./mdbx -benchmem | remove_system_info
+sleep 1
 
-echo "\n\nBenchmark using Write functions\n\n"
+
+echo "\n\nBenchmark Write functions\n\n"
 
 go test -bench=BenchmarkRocksDBPut ./rocksdb -benchmem | remove_system_info
 echo "\n"
