@@ -33,13 +33,12 @@ func BenchmarkMDBXDBUpdateTest(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		key, val := util.GetKeyValue()
 		env.Update(func(txn *mdbx.Txn) error {
 			dbi, err := txn.OpenDBI("mydb", mdbx.Create, nil, nil)
 			if err != nil {
 				return fmt.Errorf("open DBI: %w", err)
 			}
-
-			key, val := util.GetKeyValue()
 			if err := txn.Put(dbi, key, val, 0); err != nil {
 				return fmt.Errorf("put: %w", err)
 			}

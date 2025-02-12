@@ -21,13 +21,12 @@ func BenchmarkBadgerGet(b *testing.B) {
 
 	for _, numEntries := range util.GetTotalEntries() {
 		b.Run(fmt.Sprintf("entries=%d", numEntries), func(b *testing.B) {
-			runForTotalEntries(numEntries, b, db)
+			runReadForTotalEntries(numEntries, b, db)
 		})
 	}
 }
 
-func runForTotalEntries(numEntries int, b *testing.B, db *badger.DB) {
-	db.DropAll()
+func runReadForTotalEntries(numEntries int, b *testing.B, db *badger.DB) {
 	keys := make([][]byte, numEntries)
 	randomReadIndices := make([]int, numEntries)
 	for i := 0; i < numEntries; i++ {

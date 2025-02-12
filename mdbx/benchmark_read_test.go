@@ -22,10 +22,14 @@ func BenchmarkMDBXGet(b *testing.B) {
 	if err != nil {
 		b.Fatal(err)
 	}
-	err = env.SetGeometry(16*1024*1024, /* Lower size: 16 MiB */
-		1<<30, /* Current size: 1 GiB */
+	//err = env.SetGeometry(16*1024*1024, /* Lower size: 16 MiB */
+	//	1<<30, /* Current size: 1 GiB */
+	//	4<<30, /* Upper size: 4 GiB */
+	//	0, 0, 0)
+	err = env.SetGeometry(1024, /* Lower size: 1 KB */
+		1024,  /* Current size: 1 KB */
 		4<<30, /* Upper size: 4 GiB */
-		0, 0, 0)
+		1024, 0, 0)
 
 	err = env.Open(util.PathMDBX, mdbx.Create, 0664)
 	if err != nil {
@@ -77,7 +81,7 @@ func runForTotalEntries(numEntries int, b *testing.B, dbi mdbx.DBI, env *mdbx.En
 			b.Fatalf("Failed to put key-value: %v", err)
 		}
 
-		if i%1000 == 0 {
+		if i%100000 == 0 {
 			txn.Commit()
 			txn, err = env.BeginTxn(nil, 0)
 		}
