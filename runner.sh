@@ -25,6 +25,15 @@ echo "\n"
 go test -bench=BenchmarkMDBXDBUpdateTest ./mdbx -benchmem | remove_system_info
 sleep 1
 
+echo "\n\nBenchmark Delete functions\n\n"
+
+go test -bench=BenchmarkRocksDBDelete ./rocksdb -benchmem | remove_system_info
+echo "\n"
+go test -bench=BenchmarkBadgerDelete ./badgerdb -benchmem | remove_system_info
+echo "\n"
+go test -bench=BenchmarkMDBXDeleteCursors ./mdbx -benchmem | remove_system_info
+sleep 1
+
 echo "\n\nBenchmark tx Create + tx Commit manually \n\n"
 
 go test -bench=BenchmarkRocksDBTx ./rocksdb -benchmem | remove_system_info
